@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Purity 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --pink: #ff2d78;
+      --gold: #ffd700;
+      --dark: #0d0d1a;
+      --purple: #6a0dad;
+      --light-pink: #ffb3d1;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--dark);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      overflow-x: hidden;
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewport='0 0 100 100' style='font-size:20px'><text y='18'>💖</text></svg>"), auto;
+    }
+
+    /* ── CONFETTI CANVAS ── */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: radial-gradient(ellipse at 50% 0%, #3a003a 0%, var(--dark) 70%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff2d78' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .crown {
+      font-size: 4rem;
+      animation: float 2.5s ease-in-out infinite;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 12vw, 8rem);
+      line-height: 1;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--pink) 50%, #ff8c00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      animation: slideDown 0.8s ease both;
+    }
+
+    .hero .subtitle {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      color: var(--light-pink);
+      margin-top: 0.5rem;
+      animation: slideDown 0.8s 0.2s ease both;
+      opacity: 0;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 1.5rem;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      border: 2px solid var(--gold);
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: slideDown 0.8s 0.4s ease both;
+      opacity: 0;
+    }
+
+    /* ── MESSAGE SECTION ── */
+    .section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+    }
+
+    .message-card {
+      background: linear-gradient(135deg, rgba(255,45,120,0.12), rgba(106,13,173,0.15));
+      border: 1px solid rgba(255, 45, 120, 0.3);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      font-size: 1.15rem;
+      line-height: 1.9;
+      color: #f0d0e0;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 40px rgba(255, 45, 120, 0.1);
+    }
+
+    .message-card p + p { margin-top: 1rem; }
+
+    .message-card strong {
+      color: var(--gold);
+      font-weight: 900;
+    }
+
+    /* ── MEME GRID ── */
+    .meme-grid {
+      padding: 2rem 1.5rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .meme-grid h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 3rem);
+      color: var(--pink);
+      text-align: center;
+      letter-spacing: 0.08em;
+      margin-bottom: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .meme-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,45,120,0.2);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .meme-card:hover {
+      transform: translateY(-6px) rotate(-1deg);
+      box-shadow: 0 12px 40px rgba(255, 45, 120, 0.3);
+    }
+
+    .meme-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .meme-card .caption {
+      padding: 0.7rem 1rem;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 0.9rem;
+      color: var(--light-pink);
+      text-align: center;
+    }
+
+    /* ── SURPRISE BUTTON ── */
+    .surprise-section {
+      text-align: center;
+      padding: 2rem 2rem 5rem;
+    }
+
+    .surprise-btn {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      border: none;
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.1em;
+      padding: 1rem 3rem;
+      border-radius: 60px;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(255, 45, 120, 0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .surprise-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px rgba(255, 45, 120, 0.8);
+    }
+
+    .surprise-btn:active { transform: scale(0.97); }
+
+    .surprise-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      pointer-events: none;
+    }
+
+    .surprise-msg {
+      display: none;
+      margin-top: 2rem;
+      background: linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,45,120,0.12));
+      border: 1px solid var(--gold);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #fff;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+
+    .surprise-msg.show { display: block; }
+
+    .surprise-msg .big-emoji { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.3);
+      border-top: 1px solid rgba(255,45,120,0.1);
+      font-family: 'Permanent Marker', cursive;
+    }
+
+    footer span { color: var(--pink); }
+
+    /* ── FLOATING HEARTS ── */
+    .hearts-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart-float {
+      position: absolute;
+      bottom: -60px;
+      font-size: 1.5rem;
+      animation: riseUp linear infinite;
+      opacity: 0.5;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes riseUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.7); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Floating hearts bg -->
+<div class="hearts-bg" id="hearts-bg"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="crown">👑</div>
+  <h1>Happy Birthday<br>Purity</h1>
+  <p class="subtitle">aka "Pretty Gangster" 🔥💖</p>
+  <span class="badge">Born to slay, built different</span>
+</section>
+
+<!-- MESSAGE -->
+<section class="section">
+  <h2>A lil' message 💌</h2>
+  <div class="message-card">
+    <p>
+      Aye, Purity — <strong>happy birthday, pretty gangster.</strong>
+      You really out here calling yourself that and honestly? No lies detected. 👀
+    </p>
+    <p>
+      On your special day I just want you to know: you're genuinely <strong>one of a kind.</strong>
+      The kind of energy that makes the whole vibe shift when you walk in. 
+      Keep being exactly that.
+    </p>
+    <p>
+      Have the most legendary birthday. You deserve every bit of it. 🎉💖
+    </p>
+  </div>
+</section>
+
+<!-- MEMES -->
+<section class="meme-grid">
+  <h2>Lil Vibes for the Birthday Girl 😭🔥</h2>
+  <div class="grid">
+
+    <div class="meme-card">
+      <img src="https://media.tenor.com/oKaFdBM1sPYAAAAC/birthday-happy-birthday.gif" alt="Birthday dance" />
+      <div class="caption">the whole squad rn 💃🕺</div>
+    </div>
+
+    <div class="meme-card">
+      <img src="https://media.tenor.com/VKsHkJJZEjMAAAAC/spongebob-birthday.gif" alt="Spongebob birthday" />
+      <div class="caption">Purity walking into her birthday 👑</div>
+    </div>
+
+    <div class="meme-card">
+      <img src="https://media.tenor.com/5qYKHvWqZAoAAAAC/happy-birthday-cake.gif" alt="Birthday cake" />
+      <div class="caption">Make a wish bestie 🎂✨</div>
+    </div>
+
+    <div class="meme-card">
+      <img src="https://media.tenor.com/LhGDCi2KKSsAAAAC/birthday-cat.gif" alt="Birthday cat meme" />
+      <div class="caption">ur fans when they hear it's ur day 😹</div>
+    </div>
+
+    <div class="meme-card">
+      <img src="https://media.tenor.com/2kdC5gcRXxMAAAAC/birthday-girl.gif" alt="Birthday girl vibes" />
+      <div class="caption">"Pretty Gangster" energy only 💅</div>
+    </div>
+
+    <div class="meme-card">
+      <img src="https://media.tenor.com/GHFUXq_tJFgAAAAC/minions-happy-birthday.gif" alt="Minions birthday" />
+      <div class="caption">even the minions showed up 😭🎉</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SURPRISE -->
+<section class="surprise-section">
+  <h2 style="font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:var(--gold); letter-spacing:0.08em; margin-bottom:1.5rem;">One more thing... 👇</h2>
+  <button class="surprise-btn" onclick="showSurprise()">🎁 Click for a Surprise</button>
+  <div class="surprise-msg" id="surprise-msg">
+    <span class="big-emoji">💖😂</span>
+    Real talk — you called yourself "pretty gangster" and I looked it up. There's no such thing. That's YOUR title. Copyrighted. Trademarked. Nobody else is allowed.
+    <br><br>
+    <strong style="color:var(--gold)">Purity™ — Pretty Gangster since Day 1.</strong>
+    <br><br>
+    Now go enjoy your day before I embarrass you more. 🥹🎉
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  Made with 💖 by <span>Anthony</span> · For Purity's birthday 🎂
+</footer>
+
+<script>
+  // ── CONFETTI ──
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  let pieces = [];
+  const colors = ['#ff2d78','#ffd700','#ff8c00','#b44fff','#ff69b4','#fff'];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function spawnConfetti(n = 80) {
+    for (let i = 0; i < n; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: -10 - Math.random() * 200,
+        r: 4 + Math.random() * 6,
+        d: 2 + Math.random() * 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        tilt: Math.random() * 15 - 7,
+        tiltInc: 0.07 * (Math.random() - 0.5),
+        shape: Math.random() > 0.5 ? 'rect' : 'circle'
+      });
+    }
+  }
+
+  function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      ctx.save();
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = 0.85;
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.tilt * Math.PI / 180);
+      if (p.shape === 'rect') ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+      else { ctx.beginPath(); ctx.arc(0, 0, p.r, 0, 2*Math.PI); ctx.fill(); }
+      ctx.restore();
+      p.y += p.d;
+      p.tilt += p.tiltInc;
+      p.x += Math.sin(p.y / 30) * 1.2;
+    });
+    pieces = pieces.filter(p => p.y < canvas.height + 20);
+  }
+
+  function animate() { drawConfetti(); requestAnimationFrame(animate); }
+  spawnConfetti(120);
+  animate();
+  setInterval(() => spawnConfetti(30), 3000);
+
+  // ── FLOATING HEARTS ──
+  const heartsBg = document.getElementById('hearts-bg');
+  const heartEmojis = ['💖','💕','✨','🌸','💫','👑','🔥','💎'];
+  function spawnHeart() {
+    const el = document.createElement('div');
+    el.className = 'heart-float';
+    el.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    const dur = 6 + Math.random() * 8;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay = Math.random() * 3 + 's';
+    el.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+    heartsBg.appendChild(el);
+    setTimeout(() => el.remove(), (dur + 3) * 1000);
+  }
+  for (let i = 0; i < 12; i++) setTimeout(spawnHeart, i * 500);
+  setInterval(spawnHeart, 1200);
+
+  // ── SURPRISE ──
+  function showSurprise() {
+    const msg = document.getElementById('surprise-msg');
+    msg.classList.add('show');
+    spawnConfetti(150);
+    document.querySelector('.surprise-btn').textContent = '😂 Got you!';
+    document.querySelector('.surprise-btn').disabled = true;
+    document.querySelector('.surprise-btn').style.opacity = '0.6';
+  }
+</script>
+</body>
+</html>
